@@ -1,13 +1,7 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { getProducts } from "./services/api";
-
-onMounted(async () => {
-  const products = await getProducts();
-  console.log(products);
-});
+  import ProductsView from "./views/ProductsView.vue";
 </script>
 
 <template>
-  <RouterView />
+  <ProductsView />
 </template>
