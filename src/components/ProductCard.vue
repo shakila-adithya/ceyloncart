@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps<{
+import { useRouter } from 'vue-router'
+
+const props = defineProps<{
   product: {
     id: number
     title: string
@@ -7,10 +9,16 @@ defineProps<{
     thumbnail: string
   }
 }>()
+
+const router = useRouter()
+
+const goToDetail = () => {
+  router.push(`/product/${props.product.id}`)
+}
 </script>
 
 <template>
-  <div class="border p-4">
+  <div @click="goToDetail" class="cursor-pointer border p-4">
     <img :src="product.thumbnail" />
     <h2>{{ product.title }}</h2>
     <p>${{ product.price }}</p>

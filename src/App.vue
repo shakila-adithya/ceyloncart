@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import NavBar from "./components/NavBar.vue";
-  import ProductsView from "./views/ProductsView.vue";
+import NavBar from "./components/NavBar.vue";
+import { RouterView } from "vue-router";
 </script>
 
 <template>
   <NavBar />
-  <ProductsView />
+  <RouterView />
 </template>
