@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import { getProducts } from "../services/api";
 import type { Product } from "../types/Product";
+import ProductCard from "./ProductCard.vue";
 
 const products = ref<Product[]>([]);
 const loading = ref(false);
@@ -31,9 +32,11 @@ onMounted(() => {
     <p v-if="error">{{ error }}</p>
 
     <ul v-if="products.length">
-      <li v-for="product in products" :key="product.id">
-        {{ product.title }} - ${{ product.price }}
-      </li>
+      <ProductCard
+        v-for="product in products"
+        :key="product.id"
+        :product="product"
+      />
     </ul>
   </div>
 </template>
