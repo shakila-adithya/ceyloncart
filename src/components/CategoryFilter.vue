@@ -12,8 +12,8 @@ function formatLabel(slug: string): string {
 </script>
 
 <template>
-  <div class="w-full overflow-x-auto pb-2">
-    <div class="flex flex-row gap-2 min-w-max">
+  <div class="w-full">
+    <div class="flex flex-wrap gap-2">
 
       <!-- All -->
       <button
