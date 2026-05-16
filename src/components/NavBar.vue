@@ -2,10 +2,10 @@
   <header
     :class="[
       'fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-300',
-      scrolled ? scrolledHeaderClass : 'bg-transparent',
+      scrolled ? ['glass', 'navbar-glass'] : 'bg-transparent',
     ]"
   >
-    <div class="w-full max-w-[1400px] h-full mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-[1418px] h-full mx-auto px-6 sm:px-8 lg:px-10">
       <div class="flex items-center justify-between h-full">
         <RouterLink to="/" class="flex items-center gap-2 group shrink-0">
           <img
@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
@@ -84,12 +84,6 @@ const scrolled = ref(false)
 const isDark = ref(false)
 const searchQuery = ref('')
 
-const scrolledHeaderClass = computed(() =>
-  isDark.value
-    ? 'bg-gray-950/92 backdrop-blur-2xl shadow-lg shadow-pink-500/5'
-    : 'bg-white/92 backdrop-blur-2xl shadow-lg shadow-pink-500/5'
-)
-
 function doSearch() {
   const search = searchQuery.value.trim()
   if (!search) return
@@ -98,7 +92,8 @@ function doSearch() {
   searchQuery.value = ''
 }
 function onScroll() {
-  scrolled.value = window.scrollY > 20
+  const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0
+  scrolled.value = scrollTop > 8
 }
 
 function setDarkMode(value: boolean) {
@@ -111,11 +106,14 @@ function toggleDark() {
 }
 
 onMounted(() => {
-  window.addEventListener('scroll', onScroll)
   setDarkMode(localStorage.getItem('ceyloncart_dark') === '1')
+  onScroll()
+  window.addEventListener('scroll', onScroll, { passive: true })
+  document.addEventListener('scroll', onScroll, { passive: true })
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
+  document.removeEventListener('scroll', onScroll)
 })
 </script>
