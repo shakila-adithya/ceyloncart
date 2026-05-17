@@ -1,20 +1,3 @@
-<script setup lang="ts">
-import { RouterLink } from 'vue-router'
-
-const heroStats = [
-  { icon: '🛍️', value: '582+ Products', label: 'Wide Selection' },
-  { icon: '🚚', value: 'Free Shipping', label: 'LKR 5000+' },
-  { icon: '⭐', value: '4.8 Rating', label: 'Customer Score' },
-  { icon: '🔄', value: '30-Day', label: 'Easy Returns' },
-]
-
-const marqueeItems = [
-  '✨ New Arrivals','🔥 Hot Deals','💎 Premium Quality','🚀 Fast Delivery',
-  '🎁 Gift Cards','💳 Secure Payments','🌟 Top Brands','🛍️ 582+ Products',
-  '🇱🇰 Made for Sri Lanka','🏷️ Best Prices','📦 Free Shipping',
-]
-</script>
-
 <template>
 <div>
 
@@ -33,7 +16,7 @@ const marqueeItems = [
       <!-- Floating dots grid -->
       <div class="absolute inset-0 pointer-events-none" style="background-image:radial-gradient(rgba(236,72,153,.12) 1px,transparent 1px);background-size:40px 40px"></div>
 
-      <div class="hero-inner w-full max-w-[1418px] mx-auto px-6 sm:px-8 lg:px-10 py-12 grid md:grid-cols-2 gap-14 items-center relative z-10">
+      <div class="hero-inner w-full max-w-354.5 mx-auto px-6 sm:px-8 lg:px-10 py-12 grid md:grid-cols-2 gap-14 items-center relative z-10">
 
         <!-- Left text -->
         <div class="hero-copy">
@@ -129,14 +112,133 @@ const marqueeItems = [
       </div>
     </section>
 
-    <!-- ══ MARQUEE ══ -->
+    <!-- MARQUEE -->
     <div class="bg-linear-to-r from-pink-500 via-violet-500 to-blue-500 py-3 overflow-hidden">
       <div class="marquee-track animate-marquee">
         <span v-for="(item,i) in [...marqueeItems,...marqueeItems]" :key="i" class="marquee-item text-white text-sm font-bold tracking-wide">{{ item }}</span>
       </div>
     </div>
+
+    <!-- PROMO BANNER + BRAND LOGOS -->
+    <BrandBanner />
+
+    <!-- SHOP BY CATEGORY -->
+    <section class="section-warm py-15 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-345 mx-auto">
+        <div class="flex items-center justify-between mb-10 reveal" :ref="el=>io(el)">
+          <div>
+            <p class="text-pink-500 font-bold text-sm mb-1 uppercase tracking-widest">Explore</p>
+            <h2 class="section-h2 dark:text-dark!">Shop By Category</h2>
+          </div>
+          <RouterLink to="/products" class="text-sm text-pink-500 font-bold hover:text-pink-600 flex items-center gap-1 group">
+            View All <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
+          </RouterLink>
+        </div>
+        <div v-if="catLoading" class="grid grid-cols-3 md:grid-cols-6 gap-3">
+          <div v-for="i in 12" :key="i" class="skeleton rounded-2xl h-28"></div>
+        </div>
+        <div v-else class="grid grid-cols-3 md:grid-cols-6 gap-3">
+          <RouterLink v-for="(cat) in displayCategories" :key="cat.slug" :to="`/category/${cat.slug}`"
+            class="group relative rounded-2xl overflow-hidden cursor-pointer reveal-scale hover:-translate-y-1.5 transition-all duration-300"
+            :ref="el=>io(el)">
+            <img :src="getCatImg(cat.slug)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-600" loading="lazy"/>
+            <div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute inset-0 bg-linear-to-br from-pink-600/0 to-violet-600/0 group-hover:from-pink-600/5 group-hover:to-violet-600/5 transition-all duration-400"></div>
+            <span class="absolute bottom-2 left-0 right-0 text-center text-white text-xs font-bold capitalize px-1 leading-tight">{{ cat.name }}</span>
+          </RouterLink>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { RouterLink } from 'vue-router'
+import BrandBanner from '../components/BrandBanner.vue'
+import { useCategories } from '../composables/useProducts'
+
+const heroStats = [
+  { icon: '🛍️', value: '582+ Products', label: 'Wide Selection' },
+  { icon: '🚚', value: 'Free Shipping', label: 'LKR 5000+' },
+  { icon: '⭐', value: '4.8 Rating', label: 'Customer Score' },
+  { icon: '🔄', value: '30-Day', label: 'Easy Returns' },
+]
+
+const marqueeItems = [
+  '✨ New Arrivals','🔥 Hot Deals','💎 Premium Quality','🚀 Fast Delivery',
+  '🎁 Gift Cards','💳 Secure Payments','🌟 Top Brands','🛍️ 582+ Products',
+  '🇱🇰 Made for Sri Lanka','🏷️ Best Prices','📦 Free Shipping',
+]
+
+/* ── Category images — using dummyjson + picsum as reliable fallbacks ── */
+const catImgMap: Record<string,string> = {
+  beauty:              'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=200&h=200&fit=crop&auto=format',
+  fragrances:          'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=200&h=200&fit=crop&auto=format',
+  furniture:           'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&h=200&fit=crop&auto=format',
+  groceries:           'https://images.unsplash.com/photo-1542838132-92c53300491e?w=200&h=200&fit=crop&auto=format',
+  'home-decoration':   'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=200&h=200&fit=crop&auto=format',
+  'kitchen-accessories':'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&h=200&fit=crop&auto=format',
+  laptops:             'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&h=200&fit=crop&auto=format',
+  'mens-shirts':       'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=200&h=200&fit=crop&auto=format',
+  'mens-shoes':        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&h=200&fit=crop&auto=format',
+  'mens-watches':      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&h=200&fit=crop&auto=format',
+  'mobile-accessories':'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=200&h=200&fit=crop&auto=format',
+  motorcycle:          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=200&fit=crop&auto=format',
+  'skin-care':         'https://images.unsplash.com/photo-1505944270255-72b8c68c6a70?w=200&h=200&fit=crop&auto=format',
+  smartphones:         'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200&h=200&fit=crop&auto=format',
+  'sports-accessories':'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=200&h=200&fit=crop&auto=format',
+  sunglasses:          'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=200&h=200&fit=crop&auto=format',
+  tablets:             'https://images.unsplash.com/photo-1544244015-0df4702699b1?w=200&h=200&fit=crop&auto=format',
+  tops:                'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=200&h=200&fit=crop&auto=format',
+  vehicle:             'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=200&h=200&fit=crop&auto=format',
+  'womens-bags':       'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=200&h=200&fit=crop&auto=format',
+  'womens-dresses':    'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=200&h=200&fit=crop&auto=format',
+  'womens-jewellery':  'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=200&h=200&fit=crop&auto=format',
+  'womens-shoes':      'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=200&h=200&fit=crop&auto=format',
+  'womens-watches':    'https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=200&h=200&fit=crop&auto=format',
+}
+
+const { categories, loading: catLoading, fetchCategories } = useCategories()
+
+const displayCategories = ref<any[]>([])
+
+function getCatImg(slug: string) {
+  return catImgMap[slug] || `https://picsum.photos/seed/${slug}v2/200/200`
+}
+
+let observer: IntersectionObserver
+
+function io(el: any) {
+  if (!el || !observer) return
+  const node = (el as any).$el ?? el
+  if (node instanceof Element) observer.observe(node)
+}
+
+onMounted(async () => {
+  observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('show')
+        // For bounce/zoom/rotate/blur classes that use animation
+        const el = e.target as HTMLElement
+        if (el.classList.contains('reveal-bounce') ||
+            el.classList.contains('reveal-zoom') ||
+            el.classList.contains('reveal-rotate') ||
+            el.classList.contains('reveal-clip') ||
+            el.classList.contains('reveal-flip-x') ||
+            el.classList.contains('reveal-blur')) {
+          el.style.opacity = '1'
+        }
+        observer.unobserve(e.target)
+      }
+    })
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' })
+
+  await fetchCategories()
+  displayCategories.value = categories.value.slice(0, 12)
+})
+</script>
 
 <style scoped>
 .hero-btn-primary {

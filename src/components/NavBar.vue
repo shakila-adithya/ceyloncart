@@ -5,7 +5,7 @@
       scrolled ? ['glass', 'navbar-glass'] : 'bg-transparent',
     ]"
   >
-    <div class="w-full max-w-[1418px] h-full mx-auto px-6 sm:px-8 lg:px-10">
+    <div class="w-full max-w-354.5 h-full mx-auto px-6 sm:px-8 lg:px-10">
       <div class="flex items-center justify-between h-full">
         <RouterLink to="/" class="flex items-center gap-2 group shrink-0">
           <img
