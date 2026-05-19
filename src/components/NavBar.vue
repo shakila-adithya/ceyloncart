@@ -98,6 +98,7 @@ function onScroll() {
 
 function setDarkMode(value: boolean) {
   isDark.value = value
+  document.documentElement.classList.toggle('dark', value)
   localStorage.setItem('ceyloncart_dark', value ? '1' : '0')
 }
 
