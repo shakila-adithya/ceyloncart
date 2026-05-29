@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen transition-colors duration-300">
     <NavBar />
-    <main class="pt-[65px]">
+    <main class="pt-16.25">
       <RouterView v-slot="{ Component }">
         <Transition name="page" mode="out-in">
           <component :is="Component" />
