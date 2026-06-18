@@ -16,6 +16,15 @@ export interface Product {
   shippingInformation?: string
   warrantyInformation?: string
   returnPolicy?: string
+  reviews?: Review[]
+}
+
+export interface Review {
+  rating: number
+  comment: string
+  date: string
+  reviewerName: string
+  reviewerEmail: string
 }
 
 export interface Category {
