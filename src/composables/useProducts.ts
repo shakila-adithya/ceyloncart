@@ -75,3 +75,34 @@ export function useCategories() {
 
   return { categories, loading, fetchCategories }
 }
+
+export function useProduct() {
+  const product = ref<Product | null>(null)
+  const loading = ref(false)
+  const error = ref<string | null>(null)
+
+  async function fetchProduct(id: number) {
+    loading.value = true
+    error.value = null
+    try {
+      const realId = id > 20000 ? id - 20000 : id > 10000 ? id - 10000 : id
+      const res = await fetch(`${BASE}/products/${realId}`)
+      const data = await res.json()
+
+      if (id > 20000) {
+        data.price = parseFloat((data.price * 0.85).toFixed(2))
+        data.title = `${data.title} — Premium`
+      } else if (id > 10000) {
+        data.price = parseFloat((data.price * 1.0).toFixed(2))
+        data.title = `${data.title} — Special`
+      }
+      product.value = data
+    } catch (e: any) {
+      error.value = e.message
+    } finally {
+      loading.value = false
+    }
+  }
+
+  return { product, loading, error, fetchProduct }
+}
