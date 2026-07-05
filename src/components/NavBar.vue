@@ -68,13 +68,75 @@
             </span>
           </RouterLink>
 
-          <button class="hidden md:flex btn-signin text-sm">Sign In</button>
+          <!-- Profile -->
+          <div v-if="authStore.isLoggedIn" class="relative" ref="profileRef">
+            <button @click.stop="profileOpen = !profileOpen"
+              class="flex items-center gap-2 pl-1 py-1 pr-2 rounded-full hover:bg-pink-50 dark:hover:bg-gray-800 transition-colors">
+              <img :src="authStore.user?.image" class="w-8 h-8 rounded-full object-cover ring-2 ring-pink-400 ring-offset-1"/>
+              <span class="hidden lg:block text-sm font-semibold text-gray-700 dark:text-gray-200 max-w-18 truncate">
+                {{ authStore.user?.firstName }}
+              </span>
+              <svg class="w-3 h-3 text-gray-400 transition-transform duration-200" :class="profileOpen ? 'rotate-180' : ''"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <Transition name="dropdown">
+              <div v-if="profileOpen"
+                class="absolute right-0 mt-2 w-70 bg-white dark:bg-gray-900 rounded-3xl shadow-3xl shadow-pink-500/10
+                       border border-pink-100/50 dark:border-gray-800 overflow-hidden z-50">
+                       
+                <!-- User info -->
+                <div class="px-4 py-3 bg-linear-to-r from-pink-50 to-violet-50 dark:from-gray-800 dark:to-gray-800">
+                  <div class="flex items-center gap-3">
+                    <img :src="authStore.user?.image" class="w-10 h-10 rounded-full object-cover ring-2 ring-pink-300"/>
+                    <div class="min-w-0">
+                      <p class="text-sm font-bold text-gray-800 dark:text-white truncate">
+                        {{ authStore.user?.firstName }} {{ authStore.user?.lastName }}
+                      </p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ authStore.user?.email }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-2">
+                  <RouterLink to="/wishlist" @click="profileOpen = false"
+                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-300
+                           hover:bg-pink-50 dark:hover:bg-gray-800 rounded-xl transition-colors">
+                    <svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                    My Wishlist
+                  </RouterLink>
+                  <RouterLink to="/cart" @click="profileOpen = false"
+                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-300
+                           hover:bg-pink-50 dark:hover:bg-gray-800 rounded-xl transition-colors">
+                    <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                    </svg>
+                    My Cart
+                  </RouterLink>
+                  <hr class="my-1 border-gray-100 dark:border-gray-800"/>
+                  <button @click="doLogout"
+                    class="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-500
+                           hover:bg-red-50 dark:hover:bg-red-950/40 rounded-xl transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    Sign Out
+                  </button>
+                </div>
+              </div>
+            </Transition>
+          </div>
+
+          <RouterLink v-else to="/login" class="hidden md:flex btn-signin text-sm">Sign In</RouterLink>
 
           <button class="icon-btn">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
+          
         </div>
       </div>
     </div>
@@ -86,15 +148,26 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useWishlistStore } from '../stores/wishlist'
 import { useCartStore } from '../stores/cart'
+import { useAuthStore } from '../stores/auth'
 
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
 const wishlistStore = useWishlistStore()
 const cartStore = useCartStore()
 
 const scrolled = ref(false)
 const isDark = ref(false)
 const searchQuery = ref('')
+const profileOpen = ref(false)
+const mobileOpen = ref(false)
+
+function doLogout() {
+  authStore.logout()
+  profileOpen.value = false
+  mobileOpen.value = false
+  router.push('/')
+}
 
 function doSearch() {
   const search = searchQuery.value.trim()
