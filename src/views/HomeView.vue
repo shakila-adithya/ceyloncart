@@ -16,10 +16,10 @@
       <!-- Floating dots grid -->
       <div class="absolute inset-0 pointer-events-none" style="background-image:radial-gradient(rgba(236,72,153,.12) 1px,transparent 1px);background-size:40px 40px"></div>
 
-      <div class="hero-inner w-full max-w-354.5 mx-auto px-6 sm:px-8 lg:px-10 py-12 grid md:grid-cols-2 gap-14 items-center relative z-10">
+      <div class="hero-inner w-full max-w-354.5 mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-12 lg:py-16 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-14 items-center relative z-10">
 
         <!-- Left text -->
-        <div class="hero-copy">
+        <div class="hero-copy text-center md:text-left mx-auto lg:mx-0">
           <!-- Pill badge -->
           <div class="inline-flex items-center gap-2 glass rounded-full px-4 py-2 text-sm font-semibold text-pink-600 dark:text-pink-600 mb-7 animate-fade-up stagger-1">
             <span class="relative flex h-2 w-2">
@@ -42,8 +42,8 @@
           </p>
 
           <!-- CTA buttons -->
-          <div class="flex flex-wrap gap-4 animate-fade-up stagger-4">
-            <RouterLink to="/products" class="hero-btn-primary group" justify-center>
+          <div class="flex flex-col sm:flex-row sm:flex-wrap justify-center md:justify-start gap-3 sm:gap-4 animate-fade-up stagger-4">
+            <RouterLink to="/products" class="hero-btn-primary group justify-center">
               <span>Shop Now</span>
               <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -53,7 +53,7 @@
           </div>
 
           <!-- Trust badges with count-up animation -->
-          <div class="hero-stats flex flex-wrap gap-5 mt-10 animate-fade-up stagger-5">
+          <div class="hero-stats grid grid-cols-1 min-[420px]:grid-cols-2 sm:flex sm:flex-wrap justify-center md:justify-start gap-3 sm:gap-5 mt-10 animate-fade-up stagger-5">
             <div v-for="(stat, i) in heroStats" :key="stat.label"
               class="hero-stat-card flex items-center gap-2 group"
               :style="{animationDelay: (i * 0.15) + 's'}">
@@ -104,7 +104,7 @@
       </div>
 
       <!-- Animated scroll indicator -->
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-fade-up stagger-6">
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 animate-fade-up stagger-6">
         <span class="text-xs text-gray-400 tracking-widest uppercase">Scroll</span>
         <div class="w-5 h-8 rounded-full border-2 border-gray-300 dark:border-gray-300 flex justify-center pt-1.5">
           <div class="w-1 h-2 bg-pink-500 rounded-full" style="animation:float 1.5s ease-in-out infinite"></div>
@@ -124,8 +124,8 @@
 
     <!-- SHOP BY CATEGORY -->
     <section class="section-warm py-15 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-345 mx-auto">
-        <div class="flex items-center justify-between mb-10 reveal" :ref="el=>io(el)">
+      <div class="max-w-350 mx-auto">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-10 reveal" :ref="el=>io(el)">
           <div>
             <p class="text-pink-500 font-bold text-sm mb-1 uppercase tracking-widest">Explore</p>
             <h2 class="section-h2 dark:text-dark!">Shop By Category</h2>
@@ -134,12 +134,12 @@
             View All <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
           </RouterLink>
         </div>
-        <div v-if="catLoading" class="grid grid-cols-3 md:grid-cols-6 gap-3">
+        <div v-if="catLoading" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
           <div v-for="i in 12" :key="i" class="skeleton rounded-2xl h-28"></div>
         </div>
-        <div v-else class="grid grid-cols-3 md:grid-cols-6 gap-3">
+        <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
           <RouterLink v-for="(cat) in displayCategories" :key="cat.slug" :to="`/category/${cat.slug}`"
-            class="group relative rounded-2xl overflow-hidden cursor-pointer reveal-scale hover:-translate-y-1.5 transition-all duration-300"
+            class="group relative rounded-2xl overflow-hidden cursor-pointer reveal-scale hover:-translate-y-1.5 transition-all duration-300 aspect-square min-h-28"
             :ref="el=>io(el)">
             <img :src="getCatImg(cat.slug)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-600" loading="lazy"/>
             <div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
@@ -154,9 +154,10 @@
     <BannerSlider />
 
     <!--FEATURED PRODUCTS-->
+    <div class="absolute top-668 left-0 right-0 h-0.75 bg-linear-to-r from-pink-500 via-purple-500 to-blue-500"></div>
     <section class="section-cool py-20 px-4 sm:px-6 lg:px-8 wave-top">
       <div class="max-w-350 mx-auto">
-        <div class="flex items-center justify-between mb-10 reveal" :ref="el=>io(el)">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-10 reveal" :ref="el=>io(el)">
           <div>
             <p class="text-violet-500 font-bold text-sm mb-1 uppercase tracking-widest">Handpicked</p>
             <h2 class="section-h2 dark:text-white">Featured Products</h2>
@@ -165,10 +166,10 @@
             See All <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
           </RouterLink>
         </div>
-        <div v-if="featuredLoading" class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div v-if="featuredLoading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
           <SkeletonCard v-for="i in 5" :key="i"/>
         </div>
-        <div v-else class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
           <div v-for="(p) in featuredProducts" :key="p.id">
             <ProductCard :product="p"/>
           </div>
@@ -182,7 +183,7 @@
     <!--NEWSLETTER -->
     <section class="px-4 sm:px-6 lg:px-8 py-6">
       <div class="max-w-350 mx-auto">
-        <div class="newsletter-bg rounded-3xl p-10 md:p-14 text-center relative overflow-hidden reveal-zoom" :ref="el=>io(el)">
+        <div class="newsletter-bg rounded-3xl p-6 sm:p-10 md:p-14 text-center relative overflow-hidden reveal-zoom" :ref="el=>io(el)">
           <div class="absolute inset-0 opacity-15">
             <div class="absolute top-0 left-0 w-48 h-48 bg-white rounded-full blur-3xl"></div>
             <div class="absolute bottom-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
@@ -191,9 +192,9 @@
           <div class="absolute bottom-7 left-20 w-5 h-5 bg-white/25 rounded-full animate-float" style="animation-delay:1.2s"></div>
           <div class="absolute top-10 left-1/3 w-3 h-3 bg-white/20 rounded-full animate-float" style="animation-delay:2.4s"></div>
           <div class="absolute bottom-10 right-1/4 w-4 h-4 bg-white/15 rounded-full animate-float-slow" style="animation-delay:.6s"></div>
-          <h2 class="text-3xl md:text-5xl font-display font-black text-white mb-3 relative z-10">JOIN THE HAPPY CROWD</h2>
-          <p class="text-white/80 font-semibold tracking-widest text-sm mb-8 relative z-10 uppercase">Get new arrivals &amp; exclusive offers in your inbox</p>
-          <div class="flex gap-2 max-w-md mx-auto relative z-10">
+          <h2 class="text-2xl sm:text-3xl md:text-5xl font-display font-black text-white mb-3 relative z-10 leading-tight">JOIN THE HAPPY CROWD</h2>
+          <p class="text-white/80 font-semibold tracking-widest text-xs sm:text-sm mb-6 sm:mb-8 relative z-10 uppercase">Get new arrivals &amp; exclusive offers in your inbox</p>
+          <div class="flex flex-col sm:flex-row gap-2 max-w-md mx-auto relative z-10">
             <input type="email" placeholder="Enter your email…"
               class="flex-1 px-5 py-3.5 rounded-full bg-white/25 border border-white/40 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 text-sm"/>
             <button class="px-7 py-3.5 bg-white text-pink-600 rounded-full font-extrabold text-sm hover:bg-pink-50 active:scale-95 transition-all shadow-xl whitespace-nowrap">Subscribe</button>
@@ -209,7 +210,7 @@
           <p class="text-pink-500 font-bold text-sm mb-1 uppercase tracking-widest">Browse</p>
           <h2 class="section-h2 dark:text-white!">Popular Categories</h2>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
           <RouterLink v-for="(pc) in popularCategories" :key="pc.slug" :to="`/category/${pc.slug}`"
             class="group relative rounded-2xl overflow-hidden cursor-pointer reveal hover:-translate-y-2 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-pink-500/15"
             :ref="el=>io(el)">
@@ -231,7 +232,7 @@
       <!-- TOP SELLERS -->
     <section class="section-cool py-16 px-4 sm:px-6 lg:px-8">
       <div class="max-w-350 mx-auto">
-        <div class="flex items-center justify-between mb-10 reveal-flip-x" :ref="el=>io(el)">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-10 reveal-flip-x" :ref="el=>io(el)">
           <div>
             <p class="text-pink-500 font-bold text-sm mb-1 uppercase tracking-widest">Best of the Best</p>
             <h2 class="section-h2 dark:text-white!">Top Sellers</h2>
@@ -240,10 +241,10 @@
             View All <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
           </RouterLink>
         </div>
-        <div v-if="topLoading" class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div v-if="topLoading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
           <SkeletonCard v-for="i in 5" :key="i"/>
         </div>
-        <div v-else class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
           <div v-for="(p) in topProducts" :key="p.id">
             <ProductCard :product="p"/>
           </div>
@@ -259,7 +260,7 @@
             style="background-image:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.4) 39px,rgba(255,255,255,.4) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.4) 39px,rgba(255,255,255,.4) 40px)"></div>
           <div class="absolute top-0 right-0 w-64 h-64 bg-yellow-500/15 rounded-full blur-3xl animate-blob"></div>
           <div class="absolute bottom-0 left-0 w-48 h-48 bg-orange-500/15 rounded-full blur-3xl animate-blob" style="animation-delay:3s"></div>
-          <div class="relative z-10 flex flex-col md:flex-row items-center gap-8 p-8 md:p-12">
+          <div class="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-8 p-6 sm:p-8 md:p-12">
             <div class="shrink-0 relative">
               <div class="w-28 h-28 md:w-36 md:h-36 rounded-3xl bg-linear-to-br from-yellow-400/25 to-orange-400/25 border border-yellow-400/30 flex items-center justify-center animate-glow-pulse">
                 <svg viewBox="0 0 80 80" class="w-20 h-20 md:w-28 md:h-28 animate-float">
@@ -279,7 +280,7 @@
             </div>
             <div class="flex-1 text-center md:text-left">
               <p class="text-yellow-400/80 text-xs font-black tracking-widest mb-2 uppercase">Promoted Partner</p>
-              <h3 class="text-white text-3xl md:text-4xl font-display font-black mb-3 leading-tight">
+              <h3 class="text-white text-2xl sm:text-3xl md:text-4xl font-display font-black mb-3 leading-tight">
                 SELLS WITH <span class="bg-linear-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent">CyelonCart</span>
               </h3>
               <p class="text-gray-300 text-sm md:text-base leading-relaxed max-w-lg">
@@ -289,10 +290,10 @@
                 <span v-for="f in adFeatures" :key="f" class="text-xs font-semibold px-3 py-1 rounded-full bg-white/10 text-gray-200 border border-white/15 hover:bg-white/20 transition-colors cursor-default">{{ f }}</span>
               </div>
             </div>
-            <div class="shrink-0 flex flex-col items-center gap-3">
+            <div class="w-full md:w-auto shrink-0 flex flex-col items-center gap-3">
               <button class="px-8 py-4 bg-linear-to-r from-yellow-400 to-orange-500 text-black font-black rounded-2xl text-sm
                              hover:from-yellow-300 hover:to-orange-400 active:scale-95 transition-all
-                             shadow-2xl shadow-yellow-500/40 hover:shadow-yellow-500/60 whitespace-nowrap">
+                             shadow-2xl shadow-yellow-500/40 hover:shadow-yellow-500/60 whitespace-nowrap w-full md:w-auto">
                 Start Advertising →
               </button>
               <p class="text-gray-500 text-xs">No setup fees · Cancel anytime</p>

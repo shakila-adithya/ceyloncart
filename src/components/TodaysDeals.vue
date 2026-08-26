@@ -1,9 +1,10 @@
 <template>
   <section class="section-cool py-16 px-4 sm:px-6 lg:px-8">
     <div class="max-w-350 mx-auto">
+      <div class="absolute top-838 left-0 right-0 h-0.75 bg-radial to-blue-500 via-purple-500 from-pink-500  "></div>
 
       <!-- Header -->
-      <div class="flex items-center justify-between mb-8 reveal" :ref="el=>reg(el)">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8 reveal" :ref="el=>reg(el)">
         <div>
           <p class="text-pink-500 font-bold text-xs mb-1 uppercase tracking-[.15em]">
             Limited Time
@@ -33,7 +34,7 @@
       </div>
 
       <!-- Loading -->
-      <div v-if="loading" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div
           v-for="i in 4"
           :key="i"
@@ -42,7 +43,7 @@
       </div>
 
       <!-- Cards -->
-      <div v-else class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div
           v-for="(deal,i) in deals"
           :key="deal.id"

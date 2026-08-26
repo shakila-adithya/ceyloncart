@@ -1,7 +1,8 @@
 <template>
-  <div class="min-h-screen pt-24 pb-16 page-warm relative overflow-hidden">
+  <div class="min-h-screen -mt-16 pt-24 pb-16 page-warm relative overflow-hidden">
 
-    <div class="absolute top-0 left-0 right-0 h-64 pointer-events-none overflow-hidden">
+    <div class="absolute top-0 left-0 right-0 h-75 pointer-events-none overflow-hidden">
+      <div class="absolute top-74 left-0 right-0 h-0.75 bg-linear-to-r from-pink-500 via-purple-500 to-blue-500"></div>
       <div class="absolute top-0 left-0 w-full h-full"
         style="background:linear-gradient(135deg,rgba(236,72,153,.12) 0%,rgba(139,92,246,.10) 50%,rgba(59,130,246,.08) 100%)"></div>
     </div>
@@ -11,18 +12,18 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
       <!-- Breadcrumb -->
-      <nav class="flex items-center gap-2 text-sm text-gray-400 mb-6 animate-fade-up">
+      <nav class="flex items-center gap-2 text-sm text-gray-400 mb-6 animate-fade-up flex-wrap">
         <RouterLink to="/" class="hover:text-pink-500 transition-colors">Home</RouterLink>
         <span class="text-pink-400">›</span>
         <span class="text-gray-700 dark:text-gray-200 capitalize font-semibold">{{ slug?.replace(/-/g,' ') }}</span>
       </nav>
 
       <!-- Hero header -->
-      <div class="rounded-3xl p-8 mb-8 animate-fade-up relative overflow-hidden" style="background:linear-gradient(135deg,rgba(236,72,153,.08) 0%,rgba(139,92,246,.10) 50%,rgba(59,130,246,.08) 100%);border:1px solid rgba(236,72,153,.1)">
+      <div class="rounded-3xl p-5 sm:p-8 mb-8 animate-fade-up relative overflow-hidden" style="background:linear-gradient(135deg,rgba(236,72,153,.08) 0%,rgba(139,92,246,.10) 50%,rgba(59,130,246,.08) 100%);border:1px solid rgba(236,72,153,.1)">
         <div class="absolute right-6 top-1/2 -translate-y-1/2 text-8xl opacity-10 font-black capitalize select-none hidden md:block">
           {{ slug?.replace(/-/g,' ') }}
         </div>
-        <h1 class="text-4xl font-display font-bold text-gray-800 dark:text-white capitalize mb-2">
+        <h1 class="text-3xl sm:text-4xl font-display font-bold text-gray-800 dark:text-white capitalize mb-2">
           {{ slug?.replace(/-/g,' ') }}
         </h1>
         <p class="text-gray-500 dark:text-gray-400 text-sm">
@@ -32,10 +33,10 @@
 
       <!--Sub-category circular icons-->
       <div v-if="subCategories.length > 0" class="mb-10 animate-slide-down">
-        <div class="flex justify-start sm:justify-center gap-8 overflow-x-auto pb-3 scrollbar-hide px-4">
+        <div class="flex justify-start sm:justify-center gap-4 sm:gap-8 overflow-x-auto pb-3 scrollbar-hide px-1 sm:px-4">
           <button v-for="sub in subCategories" :key="sub.name"
             @click="activeFilter = sub.filter"
-            class="flex flex-col items-center gap-3 flex-linear-0 group">
+            class="flex flex-col items-center gap-3 shrink-0 group">
             <div :class="['w-20 h-20 rounded-full flex items-center justify-center text-3xl transition-all duration-300 shadow-md',
               activeFilter === sub.filter
                 ? 'bg-linear-to-br from-pink-300 to-violet-500 shadow-pink-500/40 shadow-lg scale-100'
@@ -62,7 +63,7 @@
       </div>
 
       <!-- Grid -->
-      <div v-if="loading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <div v-if="loading" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
         <SkeletonCard v-for="i in 10" :key="i"/>
       </div>
       <div v-else-if="finalProducts.length === 0" class="text-center py-24">
@@ -73,7 +74,7 @@
           Show All
         </button>
       </div>
-      <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <div v-else class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
         <div v-for="(p, i) in finalProducts" :key="p.id"
           class="reveal-scale show" :style="{transitionDelay:(i%10*40)+'ms'}">
           <ProductCard :product="p"/>

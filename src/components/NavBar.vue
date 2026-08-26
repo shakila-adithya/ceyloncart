@@ -5,7 +5,7 @@
       scrolled ? ['glass', 'navbar-glass'] : 'bg-transparent',
     ]"
   >
-    <div class="w-full max-w-354.5 h-full mx-auto px-6 sm:px-8 lg:px-10">
+    <div class="w-full max-w-354.5 h-full mx-auto px-4 sm:px-6 lg:px-10">
       <div class="flex items-center justify-between h-full">
         <RouterLink to="/" class="flex items-center gap-2 group shrink-0">
           <img
@@ -13,19 +13,19 @@
             alt="CeylonCart"
             class="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-md"
           />
-          <span class="logo-font text-xl font-bold bg-linear-to-r from-pink-500 to-violet-600 bg-clip-text text-transparent tracking-tight select-none">
+          <span class="logo-font text-lg sm:text-xl font-bold bg-linear-to-r from-pink-500 to-violet-600 bg-clip-text text-transparent tracking-tight select-none">
             CeylonCart
           </span>
         </RouterLink>
 
         <nav class="hidden md:flex items-center gap-8">
           <RouterLink to="/" class="nav-link" :class="{ active: route.path === '/' }">Home</RouterLink>
-          <RouterLink to="/products" class="nav-link" :class="{ active: route.path.startsWith('/products') }">
+          <RouterLink to="/products" class="nav-link" :class="{ active: isProductsArea }">
             Products
           </RouterLink>
         </nav>
 
-        <div class="hidden md:flex items-center relative w-64 lg:w-80">
+        <div class="hidden lg:flex items-center relative w-64 xl:w-80">
           <input
             v-model="searchQuery"
             @keyup.enter="doSearch"
@@ -38,7 +38,7 @@
           </svg>
         </div>
 
-        <div class="flex items-center gap-1.5">
+        <div class="flex items-center gap-1 sm:gap-1.5">
           <button @click="toggleDark" class="icon-btn" title="Toggle dark mode">
             <svg v-if="!isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
@@ -83,7 +83,7 @@
             </button>
             <Transition name="dropdown">
               <div v-if="profileOpen"
-                class="absolute right-0 mt-2 w-70 bg-white dark:bg-gray-900 rounded-3xl shadow-3xl shadow-pink-500/10
+                class="absolute right-0 mt-2 w-[min(17.5rem,calc(100vw-1.5rem))] bg-white dark:bg-gray-900 rounded-3xl shadow-3xl shadow-pink-500/10
                        border border-pink-100/50 dark:border-gray-800 overflow-hidden z-50">
                        
                 <!-- User info -->
@@ -99,6 +99,14 @@
                   </div>
                 </div>
                 <div class="p-2">
+                  <RouterLink to="/profile" @click="profileOpen = false"
+                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-300
+                           hover:bg-pink-50 dark:hover:bg-gray-800 rounded-xl transition-colors">
+                    <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    My Profile
+                  </RouterLink>
                   <RouterLink to="/wishlist" @click="profileOpen = false"
                     class="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-300
                            hover:bg-pink-50 dark:hover:bg-gray-800 rounded-xl transition-colors">
@@ -131,20 +139,67 @@
 
           <RouterLink v-else to="/login" class="hidden md:flex btn-signin text-sm">Sign In</RouterLink>
 
-          <button class="icon-btn">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button v-if="isAndroidDevice" class="icon-btn" @click="toggleMobileMenu" :aria-expanded="mobileOpen" aria-label="Toggle menu">
+            <svg v-if="!mobileOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
           
         </div>
       </div>
+
     </div>
+
+    <!-- Slide-down Menu -->
+    <Transition name="mobile-menu">
+      <div
+        v-if="isAndroidDevice && mobileOpen"
+        class="absolute left-0 right-0 top-16 bg-white/95 dark:bg-gray-950/95 backdrop-blur-2xl border-t border-pink-100 dark:border-gray-800 shadow-2xl shadow-pink-500/10 md:left-auto md:right-4 md:w-72 md:rounded-2xl md:border md:top-18 md:overflow-hidden"
+      >
+        <div class="px-4 py-4 space-y-2">
+          <div class="relative mb-3">
+            <input
+              v-model="searchQuery"
+              @keyup.enter="doSearch"
+              type="text"
+              placeholder="Search CeylonCart..."
+              class="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl bg-pink-50 dark:bg-gray-800 border border-pink-100 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-300"
+            />
+            <svg class="absolute left-3 top-3 w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+          </div>
+
+          <RouterLink @click="mobileOpen = false" to="/" class="mob-link" :class="{ active: route.path === '/' }">Home</RouterLink>
+          <RouterLink @click="mobileOpen = false" to="/products" class="mob-link" :class="{ active: isProductsArea }">Products</RouterLink>
+          <RouterLink v-if="authStore.isLoggedIn" @click="mobileOpen = false" to="/profile" class="mob-link" :class="{ active: route.path === '/profile' }">Profile</RouterLink>
+          <RouterLink @click="mobileOpen = false" to="/wishlist" class="mob-link" :class="{ active: route.path === '/wishlist' }">Wishlist</RouterLink>
+          <RouterLink @click="mobileOpen = false" to="/cart" class="mob-link" :class="{ active: route.path === '/cart' }">Cart</RouterLink>
+
+          <div class="pt-2">
+            <RouterLink
+              v-if="!authStore.isLoggedIn"
+              @click="mobileOpen = false"
+              to="/login"
+              class="btn-signin w-full justify-center flex py-3"
+            >
+              Sign In
+            </RouterLink>
+            <button v-else @click="doLogout" class="w-full text-left text-red-500 font-semibold py-2 text-sm">
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </header>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useWishlistStore } from '../stores/wishlist'
 import { useCartStore } from '../stores/cart'
@@ -161,6 +216,21 @@ const isDark = ref(false)
 const searchQuery = ref('')
 const profileOpen = ref(false)
 const mobileOpen = ref(false)
+const isAndroidDevice = ref(false)
+const isProductsArea = computed(() =>
+  route.path.startsWith('/products') ||
+  route.path.startsWith('/product/') ||
+  route.path.startsWith('/category/')
+)
+
+function toggleMobileMenu() {
+  if (!isAndroidDevice.value) {
+    mobileOpen.value = false
+    return
+  }
+
+  mobileOpen.value = !mobileOpen.value
+}
 
 function doLogout() {
   authStore.logout()
@@ -175,6 +245,7 @@ function doSearch() {
 
   router.push({ path: '/products', query: { search } })
   searchQuery.value = ''
+  mobileOpen.value = false
 }
 function onScroll() {
   const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0
@@ -192,6 +263,7 @@ function toggleDark() {
 }
 
 onMounted(() => {
+  isAndroidDevice.value = /Android/i.test(navigator.userAgent)
   setDarkMode(localStorage.getItem('ceyloncart_dark') === '1')
   onScroll()
   window.addEventListener('scroll', onScroll, { passive: true })
@@ -201,5 +273,14 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
   document.removeEventListener('scroll', onScroll)
+})
+
+watch(() => route.fullPath, () => {
+  profileOpen.value = false
+  mobileOpen.value = false
+  scrolled.value = false
+  nextTick(() => {
+    requestAnimationFrame(onScroll)
+  })
 })
 </script>

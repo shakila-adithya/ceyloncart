@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen pt-12 pb-24 relative overflow-hidden wishlist-premium">
+  <div class="min-h-screen -mt-16 pt-20 pb-24 relative overflow-hidden wishlist-premium">
     
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(216,180,254,0.55),transparent_34%),radial-gradient(circle_at_85%_12%,rgba(244,114,182,0.34),transparent_30%),radial-gradient(circle_at_52%_78%,rgba(192,132,252,0.42),transparent_36%),linear-gradient(135deg,#fbf7ff_0%,#f3e8ff_45%,#ffe4f1_100%)] dark:bg-[radial-gradient(circle_at_12%_18%,rgba(168,85,247,0.28),transparent_34%),radial-gradient(circle_at_85%_12%,rgba(236,72,153,0.18),transparent_30%),radial-gradient(circle_at_52%_78%,rgba(126,34,206,0.28),transparent_36%),linear-gradient(135deg,#0b0712_0%,#171022_48%,#241136_100%)]"></div>
     <div class="absolute inset-0 bg-white/35 dark:bg-white/4 backdrop-blur-2xl"></div>
@@ -31,7 +31,7 @@
 
           <button
             v-if="wishlistStore.total"
-            class="inline-flex items-center justify-center gap-2 px-5 py-3 bg-gray-950 dark:bg-white text-white dark:text-gray-950 rounded-full font-semibold text-sm shadow-lg shadow-purple-500/20 dark:shadow-purple-950/40 hover:-translate-y-0.5 hover:shadow-xl active:scale-95 transition-all"
+            class="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-5 py-3 bg-gray-950 dark:bg-white text-white dark:text-gray-950 rounded-full font-semibold text-sm shadow-lg shadow-purple-500/20 dark:shadow-purple-950/40 hover:-translate-y-0.5 hover:shadow-xl active:scale-95 transition-all"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -73,7 +73,7 @@
         v-else
         class="rounded-2xl border border-purple-200/60 dark:border-purple-200/10 bg-white/45 dark:bg-purple-100/4 shadow-[0_22px_80px_rgba(126,34,206,0.14)] dark:shadow-[0_24px_90px_rgba(0,0,0,0.32)] backdrop-blur-xl p-4 sm:p-5"
       >
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div class="grid grid-cols-1 min-[420px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
           <div
             v-for="(p, i) in wishlistStore.items"
             :key="p.id"

@@ -1,12 +1,12 @@
 <template>
-  <footer class="bg-gray-900 dark:bg-black text-gray-300 mt-20 relative overflow-hidden">
+  <footer class="bg-gray-900 dark:bg-black text-gray-300 relative overflow-hidden">
     <div class="absolute top-0 left-0 w-72 h-72 bg-pink-900/15 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute bottom-0 right-0 w-96 h-96 bg-violet-900/15 rounded-full blur-3xl pointer-events-none"></div>
 
     <!-- Stats -->
     <div class="relative border-b border-gray-800">
       <div class="max-w-350 mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
           <div v-for="stat in stats" :key="stat.label" class="flex items-center gap-3 group hover:scale-105 transition-transform">
             <div class="w-12 h-12 rounded-2xl bg-linear-to-br from-pink-600/15 to-violet-600/15 border border-pink-500/20 flex items-center justify-center text-xl group-hover:border-pink-400/40 transition-colors">
               {{ stat.icon }}
@@ -22,13 +22,13 @@
 
     <!-- grid -->
     <div class="relative max-w-350 mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
 
         <!-- Brand -->
         <div>
           <RouterLink to="/" class="flex items-center gap-2 mb-5">
             <img src="/logo.png" alt="CeylonCart" class="w-10 h-10 object-contain drop-shadow-md"/>
-            <span class="font-display text-lg font-bold bg-linear-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent">CeylonCart</span>
+            <span class="logo-font text-lg font-bold bg-linear-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent">CeylonCart</span>
           </RouterLink>
           <p class="text-gray-400 text-sm leading-relaxed mb-5">Sri Lanka's trusted destination for quality products. Discover the best deals, curated with care.</p>
           <div class="flex gap-2">
@@ -88,7 +88,7 @@
     <div class="relative border-t border-gray-800">
       <div class="max-w-350 mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
         <p>© {{ new Date().getFullYear() }} <span class="text-pink-400 font-semibold">CeylonCart</span>. All rights reserved.</p>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center justify-center flex-wrap gap-4">
           <a href="#" class="hover:text-gray-300 transition-colors">Privacy</a>
           <a href="#" class="hover:text-gray-300 transition-colors">Terms</a>
           <a href="#" class="hover:text-gray-300 transition-colors">Cookies</a>

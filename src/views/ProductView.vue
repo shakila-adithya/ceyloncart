@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen pt-12 pb-16 product-page-bg">
+  <div class="min-h-screen -mt-16 pt-20 pb-16 product-page-bg">
 
     <div class="absolute top-16 left-0 w-72 h-72 bg-pink-300/10 rounded-full blur-3xl pointer-events-none z-0"></div>
     <div class="absolute top-32 right-0 w-96 h-96 bg-violet-300/10 rounded-full blur-3xl pointer-events-none z-0"></div>
 
     <!-- Skeleton -->
-    <div v-if="loading" class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="grid md:grid-cols-2 gap-10">
+    <div v-if="loading" class="max-w-352 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
         <div class="skeleton rounded-3xl" style="aspect-ratio:1"></div>
         <div class="space-y-4 pt-4">
           <div class="skeleton h-5 w-1/3 rounded-xl"></div>
@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div v-else-if="product" class="max-w-345 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div v-else-if="product" class="max-w-352 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
       <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-8 animate-fade-up flex-wrap">
         <RouterLink to="/" class="hover:text-pink-500 transition-colors">Home</RouterLink>
@@ -31,12 +31,12 @@
         <span class="text-gray-600 dark:text-gray-300 truncate max-w-35 font-medium">{{ product.title }}</span>
       </nav>
 
-      <div class="grid md:grid-cols-2 gap-12 mb-14">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-14">
 
         <!-- Images -->
         <div class="animate-fade-up">
-          <div class="rounded-3xl overflow-hidden relative group shadow-2xl shadow-pink-500/10 mx-auto product-main-img" style="background:linear-gradient(135deg,#fdf2f8,#f5f0ff,#f0f9ff)">
-            <img :src="activeImage" :alt="product.title"
+          <div class="rounded-3xl overflow-hidden relative group shadow-2xl shadow-pink-500/10 mx-auto aspect-square w-110 max-w-xl" style="background:linear-gradient(135deg,#fdf2f8,#f5f0ff,#f0f9ff)">
+            <img v-for="img in product.images" :key="img" :src="activeImage" :alt="product.title"
               class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 p-4"/>
             <div class="absolute inset-0 bg-linear-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
@@ -73,7 +73,7 @@
         <!-- Info -->
         <div class="animate-fade-up pt-1" style="animation-delay:.12s">
 
-          <div class="flex items-center gap-3 mb-3">
+          <div class="flex flex-wrap items-center gap-3 mb-3">
             <span class="text-xs font-black text-pink-500 uppercase tracking-widest bg-pink-50 dark:bg-pink-950/50 px-3 py-1 rounded-full">{{ product.brand }}</span>
             <span class="text-xs text-gray-400 capitalize bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">{{ product.category }}</span>
           </div>
@@ -82,7 +82,7 @@
           <h1 class="text-2xl md:text-3xl font-display font-bold text-gray-900 dark:text-white mb-4 leading-tight">{{ product.title }}</h1>
 
           <!-- Rating -->
-          <div class="flex items-center gap-3 mb-5">
+          <div class="flex flex-wrap items-center gap-3 mb-5">
             <div class="flex gap-0.5">
               <span v-for="i in 5" :key="i" class="text-lg leading-none"
                 :class="i <= Math.round(product.rating) ? 'text-amber-400' : 'text-gray-200 dark:text-gray-700'">★</span>
@@ -95,7 +95,7 @@
           <div class="mb-6 p-4 rounded-2xl" style="background:linear-gradient(135deg,rgba(236,72,153,.06),rgba(139,92,246,.06));border:1px solid rgba(236,72,153,.12)">
             <!-- Main price row -->
             <div class="flex items-baseline gap-3 flex-wrap">
-              <span class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white leading-none">
+              <span class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 dark:text-white leading-none">
                 LKR {{ formatPrice(product.price) }}
               </span>
               <span v-if="product.discountPercentage > 2"
@@ -135,8 +135,8 @@
           <!-- Description -->
           <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6 text-sm">{{ product.description }}</p>
 
-          <div class="flex items-center gap-3 mb-5">
-            <div class="flex items-center bg-gray-100 dark:bg-gray-800 rounded-2xl p-1 gap-1">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-5">
+            <div class="flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-2xl p-1 gap-1">
               <button @click="qty > 1 && qty--"
                 class="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-pink-100 dark:hover:bg-pink-900 transition-colors font-bold text-pink-500 text-xl">−</button>
               <span class="w-9 text-center font-bold text-base">{{ qty }}</span>
@@ -144,7 +144,7 @@
                 class="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-pink-100 dark:hover:bg-pink-900 transition-colors font-bold text-pink-500 text-xl">+</button>
             </div>
             <button @click="addToCart"
-              class="flex-1 flex items-center justify-center gap-2 py-3.5 bg-linear-to-r from-pink-500 to-violet-500 text-white
+              class="w-full sm:flex-1 flex items-center justify-center gap-2 py-3.5 bg-linear-to-r from-pink-500 to-violet-500 text-white
                      font-bold rounded-2xl hover:from-pink-600 hover:to-violet-600 hover:shadow-xl hover:shadow-pink-500/30
                      active:scale-95 transition-all text-base">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,7 +155,7 @@
           </div>
 
           <!-- Info -->
-          <div class="grid grid-cols-2 gap-3 pt-5 border-t border-gray-100 dark:border-gray-800">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-5 border-t border-gray-100 dark:border-gray-800">
             <div v-for="info in productInfo" :key="info.label"
               class="flex items-center gap-2.5 p-3 rounded-xl bg-white/70 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800">
               <span class="text-xl">{{ info.icon }}</span>
@@ -180,7 +180,7 @@
           <h3 class="text-white text-xl font-display font-bold">SELLS WITH <span class="bg-linear-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent">CeylonCart</span></h3>
           <p class="text-gray-400 text-sm mt-1">Reach millions of shoppers across Sri Lanka. Grow your business today.</p>
         </div>
-        <button class="shrink-0 px-6 py-3 bg-linear-to-r from-yellow-400 to-orange-500 text-black font-bold rounded-xl text-sm hover:shadow-xl active:scale-95 transition-all whitespace-nowrap relative z-10">
+        <button class="w-full md:w-auto shrink-0 px-6 py-3 bg-linear-to-r from-yellow-400 to-orange-500 text-black font-bold rounded-xl text-sm hover:shadow-xl active:scale-95 transition-all whitespace-nowrap relative z-10">
           Learn More →
         </button>
       </div>
@@ -188,7 +188,7 @@
       <!--Reviews-->
       <div v-if="product.reviews?.length" class="mb-14">
         <h2 class="text-2xl font-display font-bold text-gray-800 dark:text-white mb-6">Customer Reviews</h2>
-        <div class="grid md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div v-for="review in product.reviews" :key="review.reviewerEmail"
             class="bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-2xl p-5 shadow-sm border border-gray-100/50 dark:border-gray-800/50 reveal show">
             <div class="flex items-start justify-between mb-3">
@@ -213,7 +213,7 @@
       <!-- Related Products -->
       <div v-if="related.length">
         <h2 class="text-2xl font-display font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-3">You May Also Like <span class="text-sm font-semibold text-pink-500 bg-pink-50 dark:bg-pink-950/50 px-3 py-1 rounded-full">Related</span></h2>
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           <div v-for="(p, i) in related" :key="p.id"
             class="reveal-scale show" :style="{transitionDelay:(i*70)+'ms'}">
             <ProductCard :product="p"/>
@@ -224,7 +224,7 @@
 
     <Transition name="toast">
       <div v-if="showToast"
-        class="fixed bottom-6 right-6 bg-white dark:bg-gray-900 shadow-2xl rounded-2xl px-5 py-3.5 flex items-center gap-3 z-50 border border-green-100 dark:border-green-900">
+        class="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 bg-white dark:bg-gray-900 shadow-2xl rounded-2xl px-5 py-3.5 flex items-center gap-3 z-50 border border-green-100 dark:border-green-900">
         <div class="w-9 h-9 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center">
           <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
@@ -241,17 +241,20 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import ProductCard from '../components/ProductCard.vue'
 import { useProduct, useProducts } from '../composables/useProducts'
 import { useCartStore } from '../stores/cart'
 import { useWishlistStore } from '../stores/wishlist'
+import { useAuthStore } from '../stores/auth'
 
 const route = useRoute()
+const router = useRouter()
 const { product, loading, fetchProduct } = useProduct()
 const { products: related, fetchProducts: fetchRelated } = useProducts()
 const cartStore = useCartStore()
 const wishlistStore = useWishlistStore()
+const authStore = useAuthStore()
 
 const activeImage = ref('')
 const qty = ref(1)
@@ -269,10 +272,24 @@ const productInfo = computed(() => product.value ? [
 ] : [])
 
 function formatPrice(p: number) {
-  return (p * 320).toLocaleString('en-LK', { maximumFractionDigits: 2 })
+  return (p * 200).toLocaleString('en-LK', { maximumFractionDigits: 2 })
 }
-function toggleWishlist() { if (product.value) wishlistStore.toggle(product.value) }
+function goToLogin() {
+  router.push({ name: 'login', query: { redirect: route.fullPath } })
+}
+
+function toggleWishlist() {
+  if (!authStore.isLoggedIn) {
+    goToLogin()
+    return
+  }
+  if (product.value) wishlistStore.toggle(product.value)
+}
 function addToCart() {
+  if (!authStore.isLoggedIn) {
+    goToLogin()
+    return
+  }
   if (product.value) {
     cartStore.addItem(product.value, qty.value)
     showToast.value = true
@@ -282,7 +299,7 @@ function addToCart() {
 async function load(id: number) {
   await fetchProduct(id)
   if (product.value) {
-    activeImage.value = product.value.thumbnail
+    activeImage.value = product.value.images[0]
     await fetchRelated(8, 0, product.value.category)
   }
 }

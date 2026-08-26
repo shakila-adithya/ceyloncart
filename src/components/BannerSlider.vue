@@ -2,7 +2,7 @@
   <section class="px-4 sm:px-6 lg:px-8 py-8 overflow-hidden">
     <div class="max-w-350 mx-auto">
       <!-- Header -->
-      <div class="flex items-end justify-between mb-6 reveal" :ref="registerEl">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6 reveal" :ref="registerEl">
         <div>
           <p
             class="text-pink-500 font-bold text-xs mb-1 uppercase tracking-[.15em]"
@@ -17,8 +17,7 @@
 
       <!-- Grid -->
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-        style="grid-auto-rows: 170px"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[180px] md:auto-rows-[190px] lg:auto-rows-[170px]"
       >
         <div
           v-for="(b, i) in banners"

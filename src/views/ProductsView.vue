@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen pt-12 pb-16 page-warm">
+  <div class="min-h-screen -mt-16 pt-20 pb-16 page-warm">
     <div class="max-w-345 mx-auto px-4 sm:px-6 lg:px-8">
 
       <!-- Header -->
@@ -30,8 +30,8 @@
       </div>
 
       <!-- Filter Bar -->
-      <div class="flex flex-wrap gap-3 mb-6 p-4 bg-white/70 dark:bg-gray-900/70 backdrop-blur rounded-2xl border border-pink-100/60 dark:border-gray-800 shadow-sm animate-slide-down">
-        <div class="relative flex-1 min-w-44">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto] gap-3 mb-6 p-4 bg-white/70 dark:bg-gray-900/70 backdrop-blur rounded-2xl border border-pink-100/60 dark:border-gray-800 shadow-sm animate-slide-down">
+        <div class="relative sm:col-span-2 lg:col-span-1">
           <input v-model="searchQuery" @input="debouncedSearch" type="text" placeholder="Search products…"
             class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-pink-50/80 dark:bg-gray-800 border border-pink-100 dark:border-gray-700
                    focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm transition-all"/>
@@ -40,13 +40,13 @@
           </svg>
         </div>
         <select v-model="selectedCategory" @change="applyFilters"
-          class="px-4 py-2.5 rounded-xl bg-pink-50/80 dark:bg-gray-800 border border-pink-100 dark:border-gray-700
+          class="w-full px-4 py-2.5 rounded-xl bg-pink-50/80 dark:bg-gray-800 border border-pink-100 dark:border-gray-700
                  text-sm focus:outline-none focus:ring-2 focus:ring-pink-300 text-gray-700 dark:text-gray-200 cursor-pointer">
           <option value="">All Categories</option>
           <option v-for="cat in categories" :key="cat.slug" :value="cat.slug">{{ cat.name }}</option>
         </select>
         <select v-model="sortBy" @change="applyFilters"
-          class="px-4 py-2.5 rounded-xl bg-pink-50/80 dark:bg-gray-800 border border-pink-100 dark:border-gray-700
+          class="w-full px-4 py-2.5 rounded-xl bg-pink-50/80 dark:bg-gray-800 border border-pink-100 dark:border-gray-700
                  text-sm focus:outline-none focus:ring-2 focus:ring-pink-300 text-gray-700 dark:text-gray-200 cursor-pointer">
           <option value="">Sort By</option>
           <option value="price-asc">Price: Low → High</option>
@@ -54,7 +54,7 @@
           <option value="rating">Top Rated</option>
           <option value="discount">Best Discount</option>
         </select>
-        <div class="flex items-center bg-pink-50/80 dark:bg-gray-800 border border-pink-100 dark:border-gray-700 rounded-xl overflow-hidden">
+        <div class="flex items-center justify-self-start sm:justify-self-end bg-pink-50/80 dark:bg-gray-800 border border-pink-100 dark:border-gray-700 rounded-xl overflow-hidden">
           <button @click="viewMode='grid'"
             :class="['px-3 py-2.5 transition-colors', viewMode==='grid' ? 'bg-linear-to-r from-pink-500 to-violet-500 text-white' : 'text-gray-500 hover:text-pink-500']">
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3h7v7H3zm11 0h7v7h-7zM3 14h7v7H3zm11 0h7v7h-7z"/></svg>
@@ -83,7 +83,7 @@
       </div>
 
       <!-- Loading -->
-      <div v-if="loading" :class="['grid gap-4', viewMode==='grid' ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : 'grid-cols-1 md:grid-cols-2']">
+      <div v-if="loading" :class="['grid gap-3 sm:gap-4', viewMode==='grid' ? 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5' : 'grid-cols-1 lg:grid-cols-2']">
         <SkeletonCard v-for="i in 20" :key="i"/>
       </div>
 
@@ -99,7 +99,7 @@
       </div>
 
       <!-- Products grid -->
-      <div v-else :class="['grid gap-4', viewMode==='grid' ? 'grid-cols-1 md:grid-cols-3 lg:grid-cols-5' : 'grid-cols-1 md:grid-cols-2']">
+      <div v-else :class="['grid gap-3 sm:gap-4', viewMode==='grid' ? 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5' : 'grid-cols-1 lg:grid-cols-2']">
         <div v-for="(p, i) in sorted" :key="p.id"
           class="reveal-scale show" :style="{transitionDelay: (i % 8 * 40) + 'ms'}">
           <ProductCard :product="p"/>
@@ -107,7 +107,7 @@
       </div>
 
       <!-- Pages -->
-      <div v-if="total > limit && !loading" class="flex justify-center items-center gap-3 mt-12">
+      <div v-if="total > limit && !loading" class="flex flex-col sm:flex-row justify-center items-center gap-3 mt-12">
         <button @click="prevPage" :disabled="skip === 0"
           class="flex items-center gap-1 px-5 py-2.5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700
                  text-sm font-medium disabled:opacity-40 hover:border-pink-400 hover:text-pink-500 transition-all">
@@ -313,5 +313,20 @@ const trustBadges = [
 .reveal-scale.show {
   opacity: 1;
   transform: none;
+}
+
+@media (max-width: 767px) {
+  .trust-divider {
+    display: none;
+  }
+
+  .trust-badge {
+    flex-basis: 100%;
+  }
+
+  .trust-title,
+  .trust-sub {
+    white-space: normal;
+  }
 }
 </style>

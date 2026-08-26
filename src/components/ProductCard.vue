@@ -12,7 +12,7 @@
       </div>
 
       <button @click.stop="toggleWishlist"
-              :class="['absolute top-2 right-2 w-8 h-8 rounded-full shadow-md flex items-center justify-content-center transition-all hover:scale-110 active:scale-95',
+              :class="['absolute top-2 right-2 w-8 h-8 rounded-full shadow-md flex items-center justify-center transition-all hover:scale-110 active:scale-95',
                 isWishlisted ? 'bg-pink-500' : 'bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm']"
               style="display:flex;align-items:center;justify-content:center">
         <svg class="w-4 h-4 transition-all"
@@ -31,9 +31,9 @@
       </div>
     </div>
 
-    <div class="p-3">
+    <div class="p-2.5 sm:p-3">
       <p class="text-xs text-pink-500 font-semibold capitalize mb-0.5 truncate">{{ product.brand || product.category }}</p>
-      <h3 class="text-sm font-semibold text-gray-800 dark:text-white line-clamp-2 mb-1.5 leading-snug">{{ product.title }}</h3>
+      <h3 class="text-xs sm:text-sm font-semibold text-gray-800 dark:text-white line-clamp-2 mb-1.5 leading-snug">{{ product.title }}</h3>
       <div class="flex items-center gap-1 mb-2">
         <div class="flex gap-px">
           <span v-for="i in 5" :key="i" class="text-xs leading-none"
@@ -73,25 +73,42 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import type { Product } from '../types/Product'
 import { useCartStore } from '../stores/cart'
 import { useWishlistStore } from '../stores/wishlist'
+import { useAuthStore } from '../stores/auth'
 
 const props = defineProps<{ product: Product }>()
 const router = useRouter()
+const route = useRoute()
 const cartStore = useCartStore()
 const wishlistStore = useWishlistStore()
+const authStore = useAuthStore()
 
 const showToast = ref(false)
 const isWishlisted = computed(() => wishlistStore.isWishlisted(props.product.id))
 const originalPrice = computed(() => props.product.price / (1 - props.product.discountPercentage / 100))
 
-function formatPrice(p: number) { return (p * 320).toLocaleString('en-LK', { maximumFractionDigits: 2 }) }
+function formatPrice(p: number) { return (p * 200).toLocaleString('en-LK', { maximumFractionDigits: 2 }) }
 function goToProduct() { router.push(`/product/${props.product.id}`) }
-function toggleWishlist() { wishlistStore.toggle(props.product) }
+function goToLogin() {
+  router.push({ name: 'login', query: { redirect: route.fullPath } })
+}
+
+function toggleWishlist() {
+  if (!authStore.isLoggedIn) {
+    goToLogin()
+    return
+  }
+  wishlistStore.toggle(props.product)
+}
 
 function addToCart() {
+  if (!authStore.isLoggedIn) {
+    goToLogin()
+    return
+  }
   cartStore.addItem(props.product); showToast.value = true
   setTimeout(() => { showToast.value = false }, 1300)
 }

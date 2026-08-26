@@ -1,5 +1,5 @@
 <template>
-  <div class="login-root min-h-screen flex items-center justify-center pt-16 px-4 relative overflow-hidden">
+  <div class="login-root min-h-screen flex items-center justify-center -mt-16 pt-24 px-4 relative overflow-hidden">
     <div class="login-mesh" aria-hidden="true"></div>
     <div class="orb orb-1" aria-hidden="true"></div>
     <div class="orb orb-2" aria-hidden="true"></div>
@@ -23,7 +23,7 @@
         <!-- hint -->
         <div class="demo-box mb-5">
           <p class="demo-title">Demo Credentials</p>
-          <div class="demo-creds">
+          <div class="demo-creds flex flex-col sm:flex-row gap-1 sm:gap-4">
             <span>User: <code class="demo-code">jamesd</code></span>
             <span>Pass: <code class="demo-code">jamesdpass</code></span>
           </div>
@@ -218,7 +218,6 @@ async function handleLogin() {
 .dark .demo-title { color: #93c5fd !important; }
 .demo-creds {
   display: flex;
-  gap: 1rem;
   font-size: .75rem;
   color: #2563eb;
 }
@@ -366,3 +365,4 @@ async function handleLogin() {
 .err-enter-active, .err-leave-active { transition: all .25s ease; }
 .err-enter-from, .err-leave-to { opacity: 0; transform: translateY(-4px); }
 </style>
+

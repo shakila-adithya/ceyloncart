@@ -1,10 +1,9 @@
 <template>
-  <section class="px-4 max-w-365 h-full mx-auto sm:px-8 lg:px-8 py-6">
-    <div class="max-w-365 mx-auto space-y-4">
+  <section class="px-4 max-w-[91.25rem] h-full mx-auto sm:px-8 lg:px-8 py-6">
+    <div class="max-w-[91.25rem] mx-auto space-y-4">
 
       <!-- Auto-sliding promo banner-->
-      <div class="relative rounded-3xl overflow-hidden shadow-xl cursor-pointer group"
-        style="height:clamp(200px,32vw,320px)"
+      <div class="relative rounded-3xl overflow-hidden shadow-xl cursor-pointer group h-[clamp(200px,32vw,320px)]"
         @click="$router.push(slides[cur].link)">
 
         <!-- All slides rendered, only active is visible-->
@@ -18,16 +17,16 @@
             loading="eager"/>
           <div class="absolute inset-0"
             style="background:linear-gradient(90deg,rgba(15,5,30,.88) 0%,rgba(15,5,30,.55) 45%,transparent 100%)"></div>
-          <div class="absolute inset-0 flex flex-col justify-center px-6 sm:px-10 md:px-14">
+          <div class="absolute inset-0 flex flex-col justify-center px-5 sm:px-10 md:px-14">
             <span class="inline-block self-start mb-3 text-[11px] font-black uppercase tracking-widest px-3 py-1 rounded-full"
               style="background:linear-gradient(to right,#ec4899,#8b5cf6);color:white">{{ sl.tag }}</span>
             <h2 class="text-white font-black leading-tight mb-2 drop-shadow-lg"
               style="font-size:clamp(1.3rem,3.5vw,2.4rem)">{{ sl.title }}</h2>
             <p class="text-white/75 text-sm mb-5 max-w-md">{{ sl.sub }}</p>
-            <div class="flex gap-3 flex-wrap items-center">
-              <button class="px-5 py-2 rounded-full font-black text-sm transition-all active:scale-95 hover:scale-105"
+            <div class="flex flex-col sm:flex-row gap-3 sm:flex-wrap sm:items-center">
+              <button class="w-full sm:w-auto px-5 py-2 rounded-full font-black text-sm transition-all active:scale-95 hover:scale-105"
                 style="background:white;color:#ec4899">Shop Now →</button>
-              <span v-if="sl.price" class="px-4 py-2 rounded-full text-white text-sm font-bold"
+              <span v-if="sl.price" class="w-full sm:w-auto px-4 py-2 rounded-full text-white text-sm font-bold text-center"
                 style="background:rgba(139,92,246,.65);backdrop-filter:blur(6px)">{{ sl.price }}</span>
             </div>
           </div>
@@ -64,7 +63,7 @@
       </div>
 
       <!-- Payment info -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 reveal" :ref="el=>reg(el)">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 reveal" :ref="el=>reg(el)">
         <div v-for="p in payInfo" :key="p.label"
           class="flex items-center gap-3 rounded-2xl p-3 border transition-all hover:scale-105"
           style="background:linear-gradient(135deg,rgba(236,72,153,.05) 0%,rgba(139,92,246,.07) 100%);border-color:rgba(139,92,246,.15)">
