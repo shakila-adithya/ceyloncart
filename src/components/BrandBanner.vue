@@ -115,7 +115,18 @@ const next = () => { cur.value = (cur.value+1) % slides.length }
 const prev = () => { cur.value = (cur.value-1+slides.length) % slides.length }
 
 let io: IntersectionObserver
-function reg(el:any){ if(!el||!io)return; const n=(el as any).$el??el; if(n instanceof Element)io.observe(n) }
+
+type VueRefElement = Element | { $el?: Element } | null
+
+function reg(el: VueRefElement) {
+  if (!el || !io) return
+
+  const node = el instanceof Element ? el : el.$el
+
+  if (node instanceof Element) {
+    io.observe(node)
+  }
+}
 
 onMounted(()=>{
   io = new IntersectionObserver(entries=>{

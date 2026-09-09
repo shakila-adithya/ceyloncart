@@ -26,8 +26,13 @@ export const useAuthStore = defineStore('auth', () => {
       localStorage.setItem('ceyloncart_user', JSON.stringify(data))
       localStorage.setItem('ceyloncart_token', data.token)
       return true
-    } catch (e: any) {
-      error.value = e.message || 'Login failed'
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        error.value = e.message
+      } else {
+        error.value = 'Login failed'
+      }
+
       return false
     } finally {
       loading.value = false

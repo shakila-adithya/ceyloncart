@@ -221,19 +221,25 @@ function countdownFor(endMs: number) {
 const fmtP = (p:number) =>
   (p * 320).toLocaleString("en-LK", { maximumFractionDigits: 0 })
 
-const origPrice = (d:any) =>
+const origPrice = (d: Product) =>
   d.price / (1 - d.discountPercentage / 100)
 
 const soldPct = (stock:number) =>
   Math.min(92, Math.max(12, Math.round(((300-stock)/300)*100)))
 
-let timer:any
+let timer: ReturnType<typeof setInterval> | undefined
 let io: IntersectionObserver
 
-function reg(el:any){
-  if(!el || !io) return
-  const n = el.$el ?? el
-  if(n instanceof Element) io.observe(n)
+type VueRefElement = Element | { $el?: Element } | null
+
+function reg(el: VueRefElement) {
+  if (!el || !io) return
+
+  const node = el instanceof Element ? el : el.$el
+
+  if (node instanceof Element) {
+    io.observe(node)
+  }
 }
 
 onMounted(async()=>{
@@ -252,9 +258,9 @@ onMounted(async()=>{
 
     const startedAt = Date.now()
     deals.value = [...d.products]
-      .sort((a:any,b:any)=>b.discountPercentage-a.discountPercentage)
+      .sort((a: Product, b: Product) =>b.discountPercentage - a.discountPercentage)
       .slice(0,4)
-      .map((product:any, index:number) => ({
+      .map((product: Product, index: number) => ({
         ...product,
         dealEndsAt: startedAt + dealDurations[index % dealDurations.length] * 1000,
       }))
@@ -266,8 +272,10 @@ onMounted(async()=>{
   timer = setInterval(tick,1000)
 })
 
-onUnmounted(()=>{
-  clearInterval(timer)
+onUnmounted(() => {
+  if (timer) {
+    clearInterval(timer)
+  }
 })
 </script>
 

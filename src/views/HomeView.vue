@@ -215,7 +215,7 @@
             class="group relative rounded-2xl overflow-hidden cursor-pointer reveal hover:-translate-y-2 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-pink-500/15"
             :ref="el=>io(el)">
             <img :src="pc.img" class="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-600" loading="lazy"
-              @error="(e:any) => e.target.src=pc.fallback"/>
+              @error="(e: Event) => ((e.target as HTMLImageElement).src = pc.fallback)"/>
             <div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/25 to-transparent"></div>
             <div class="absolute inset-0 border-2 border-transparent group-hover:border-pink-400/60 rounded-2xl transition-all duration-300"></div>
             <!-- Hover overlay -->
@@ -315,7 +315,7 @@ import ProductCard from '../components/ProductCard.vue'
 import SkeletonCard from '../components/SkeletonCard.vue'
 import TodayDeals from '../components/TodaysDeals.vue'
 import { useCategories, useProducts } from '../composables/useProducts'
-import type { Product } from '../types/Product.ts'
+import type { Product, Category } from '../types/Product.ts'
 
 const heroStats = [
   { icon: '🛍️', value: '582+ Products', label: 'Wide Selection' },
@@ -364,7 +364,7 @@ const { products: featuredRaw, loading: featuredLoading, fetchProducts: fetchFea
 const { products: topRaw, loading: topLoading, fetchProducts: fetchTop } = useProducts()
 const { categories, loading: catLoading, fetchCategories } = useCategories()
 
-const displayCategories = ref<any[]>([])
+const displayCategories = ref<Category[]>([])
 const topProducts = ref<Product[]>([])
 const featuredProducts = ref<Product[]>([])
 
@@ -413,10 +413,16 @@ function getCatImg(slug: string) {
 
 let observer: IntersectionObserver
 
-function io(el: any) {
+type VueRefElement = Element | { $el?: Element } | null
+
+function io(el: VueRefElement) {
   if (!el || !observer) return
-  const node = (el as any).$el ?? el
-  if (node instanceof Element) observer.observe(node)
+
+  const node = el instanceof Element ? el : el.$el
+
+  if (node instanceof Element) {
+    observer.observe(node)
+  }
 }
 
 onMounted(async () => {

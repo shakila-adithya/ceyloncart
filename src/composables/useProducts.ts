@@ -49,9 +49,15 @@ export function useProducts() {
         total.value = expanded.length 
         products.value = expanded.slice(skip, skip + limit)
       }
-    } catch (e: any) {
+    }
+    catch (e: unknown) {
+    if (e instanceof Error) {
       error.value = e.message
-    } finally {
+    } else {
+      error.value = 'Failed to fetch products'
+    }
+    } 
+     finally {
       loading.value = false
     }
   }
@@ -97,8 +103,12 @@ export function useProduct() {
         data.title = `${data.title} — Special`
       }
       product.value = data
-    } catch (e: any) {
-      error.value = e.message
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        error.value = e.message
+      } else {
+        error.value = 'Failed to fetch product details'
+    }
     } finally {
       loading.value = false
     }
